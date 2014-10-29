@@ -31,22 +31,99 @@ class Node:
 def makeMove(board, move):
     if not move == "left" or not move == "right":
         raise Exception("invalid move attempted")
-    new_board = board
+
+    if board.winner:
+        raise Exception("game is already won")
+    a1 = board.a1
+    a2 = board.a2
+    b1 = board.b1
+    b2 = board.b2
     if board.turn == A_TURN:
         if move == "left":
-
+            dist = a1
+            a1 = 0
+            if dist >= 4:
+                a1 += 1
+                a2 += 1
+                b1 += 1
+                b2 += 1
+                dist -= 4
+            if dist >= 1:
+                a2 += 1
+            if dist >= 2:
+                b2 += 1
+            if dist == 3:
+                b1 += 1
         elif move == "right":
-
+            dist = a2
+            a2 = 0
+            if dist >= 4:
+                a1 += 1
+                a2 += 1
+                b1 += 1
+                b2 += 1
+                dist -= 4
+            if dist >= 1:
+                b2 += 1
+            if dist >= 2:
+                b1 += 1
+            if dist == 3:
+                a1 += 1
     else:
         if move == "left":
-
+            dist = b1
+            b1 = 0
+            if dist >= 4:
+                a1 += 1
+                a2 += 1
+                b1 += 1
+                b2 += 1
+                dist -= 4
+            if dist >= 1:
+                a1 += 1
+            if dist >= 2:
+                a2 += 1
+            if dist == 3:
+                b2 += 1
         elif move == "right":
-
+            dist = b2
+            b2 = 0
+            if dist >= 4:
+                a1 += 1
+                a2 += 1
+                b1 += 1
+                b2 += 1
+                dist -= 4
+            if dist >= 1:
+                b1 += 1
+            if dist >= 2:
+                a1 += 1
+            if dist == 3:
+                a2 += 1
+    next_turn = 1 - board.turn
+    return Board(a1, a2, b1, b2, next_turn)
 
 def buildTree(parent, prev):
-    next_turn = 1 - parent.turn
+    left_board = makeMove(parent.value, "left")
+    if left_board.winner:
+        parent.left = Node(left_board)
+    else:
+        if not left_board.hash in prev:
+            new_prev = prev
+            new_prev.add(left_board.hash)
+            parent.left = buildTree(Node(left_board), new_prev)
+    right_board = makeMove(parent.value, "right")
+    if right_board.winner:
+        parent.right = Node(right_board)
+    else:
+        if not right_board.hash in prev:
+            new_prev = prev
+            new_prev.add(right_board.hash)
+            parent.right = buildTree(Node(right_board), new_prev)
+    return parent
 
-start_board = Board(2, 2, 2, 2, A_TURN)
-prev = set();
-prev.add(start_board.hash)
-board_tree = buildTree(start_board, prev)
+def main(args):
+    start_board = Board(2, 2, 2, 2, A_TURN)
+    prev = set();
+    prev.add(start_board.hash)
+    board_tree = buildTree(start_board, prev)
