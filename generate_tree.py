@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 A_TURN = 0
 B_TURN = 1
 LEFT = 0
@@ -12,9 +14,10 @@ class Board:
         self.b1 = b1
         self.b2 = b2
         self.turn = turn
-        self.str = "[" + a1 + "|" + a2 + "] / [" + b1 + "|" + b2 + "]"
-        self.hash = (turn * 10000) + (a1 * 1000) + (a2 * 100) + (b1 * 10)
-                + (b2 * 1)
+        self.str = "[" + str(a1) + "|" + str(a2) + "]\n[" + str(b1) + "|" \
+                + str(b2) + "]"
+        self.hash = ((turn * 10000) + (a1 * 1000) + (a2 * 100) + (b1 * 10)
+                + (b2 * 1))
         if a1 + a2 == 0:
             self.winner = B_WIN
         elif b1 + b2 == 0:
@@ -29,9 +32,8 @@ class Node:
         self.right = right
 
 def makeMove(board, move):
-    if not move == "left" or not move == "right":
+    if not move == "left" and not move == "right":
         raise Exception("invalid move attempted")
-
     if board.winner:
         raise Exception("game is already won")
     a1 = board.a1
@@ -122,8 +124,21 @@ def buildTree(parent, prev):
             parent.right = buildTree(Node(right_board), new_prev)
     return parent
 
+def printTree(root):
+    if not root:
+        return
+    print root.value.str + "\n"
+    printTree(root.left)
+    printTree(root.right)
+
 def main(args):
+    print "STARTED\n\n"
     start_board = Board(2, 2, 2, 2, A_TURN)
     prev = set();
     prev.add(start_board.hash)
-    board_tree = buildTree(start_board, prev)
+    board_tree = buildTree(Node(start_board), prev)
+    printTree(board_tree)
+    print "\n\nFINISHED"
+
+if __name__ == "__main__":
+    main(None)
