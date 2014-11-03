@@ -45,6 +45,8 @@ def makeMove(board, move):
     b2 = board.b2
     if board.turn == A_TURN:
         if move == "left":
+            if a1 == 0:
+                return None
             dist = a1
             a1 = 0
             if dist >= 4:
@@ -60,6 +62,8 @@ def makeMove(board, move):
             if dist == 3:
                 b1 += 1
         elif move == "right":
+            if a2 == 0:
+                return None
             dist = a2
             a2 = 0
             if dist >= 4:
@@ -76,6 +80,8 @@ def makeMove(board, move):
                 a1 += 1
     else:
         if move == "left":
+            if b1 == 0:
+                return None
             dist = b1
             b1 = 0
             if dist >= 4:
@@ -91,6 +97,8 @@ def makeMove(board, move):
             if dist == 3:
                 b2 += 1
         elif move == "right":
+            if b2 == 0:
+                return None
             dist = b2
             b2 = 0
             if dist >= 4:
@@ -110,21 +118,23 @@ def makeMove(board, move):
 
 def buildTree(parent, prev):
     left_board = makeMove(parent.value, "left")
-    if left_board.winner:
-        parent.left = Node(left_board)
-    else:
-        if not left_board.hash in prev:
-            new_prev = prev
-            new_prev.add(left_board.hash)
-            parent.left = buildTree(Node(left_board), new_prev)
+    if left_board:
+        if left_board.winner:
+            parent.left = Node(left_board)
+        else:
+            if not left_board.hash in prev:
+                new_prev = deepcopy(prev)
+                new_prev.add(left_board.hash)
+                parent.left = buildTree(Node(left_board), new_prev)
     right_board = makeMove(parent.value, "right")
-    if right_board.winner:
-        parent.right = Node(right_board)
-    else:
-        if not right_board.hash in prev:
-            new_prev = prev
-            new_prev.add(right_board.hash)
-            parent.right = buildTree(Node(right_board), new_prev)
+    if right_board:
+        if right_board.winner:
+            parent.right = Node(right_board)
+        else:
+            if not right_board.hash in prev:
+                new_prev = deepcopy(prev)
+                new_prev.add(right_board.hash)
+                parent.right = buildTree(Node(right_board), new_prev)
     return parent
 
 def printTree(root):
@@ -143,16 +153,10 @@ def printNodeQueue(queue):
 def printTreeBranches(root, queue):
     queue.append(root.value.str)
     if not root.left and not root.right:
-        print "BRANCH"
-        print queue
         printNodeQueue(deepcopy(queue))
     if root.left:
-        print "LEFT"
-        print queue
         printTreeBranches(root.left, deepcopy(queue))
     if root.right:
-        print "RIGHT"
-        print queue
         printTreeBranches(root.right, deepcopy(queue))
 
 def main(args):
