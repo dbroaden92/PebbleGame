@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+from collections import deque
+from copy import deepcopy
+
 A_TURN = 0
 B_TURN = 1
 LEFT = 0
@@ -131,13 +134,35 @@ def printTree(root):
     printTree(root.left)
     printTree(root.right)
 
+def printNodeQueue(queue):
+    print "----------"
+    while queue:
+        print queue.popleft() + "\n"
+    print "----------"
+
+def printTreeBranches(root, queue):
+    queue.append(root.value.str)
+    if not root.left and not root.right:
+        print "BRANCH"
+        print queue
+        printNodeQueue(deepcopy(queue))
+    if root.left:
+        print "LEFT"
+        print queue
+        printTreeBranches(root.left, deepcopy(queue))
+    if root.right:
+        print "RIGHT"
+        print queue
+        printTreeBranches(root.right, deepcopy(queue))
+
 def main(args):
     print "STARTED\n\n"
     start_board = Board(2, 2, 2, 2, A_TURN)
     prev = set();
     prev.add(start_board.hash)
     board_tree = buildTree(Node(start_board), prev)
-    printTree(board_tree)
+    # printTree(board_tree)
+    printTreeBranches(board_tree, deque())
     print "\n\nFINISHED"
 
 if __name__ == "__main__":
