@@ -7,8 +7,21 @@ var board = {
 };
 var winner = null;
 
-function loadDefault() {
-    board = createBoard();
+function newGame(numCol, initVal, turn) {
+    numCol = numCol || document.getElementById('numcol').value || 2;
+    initVal = initVal || document.getElementById('initval').value || 2;
+    turn = turn || PLAYER_A;
+
+    if (numCol < 1) {
+        numCol = 1;
+    } else if (numCol > 10) {
+        numCol = 10;
+    }
+    if (initVal < 1) {
+        initVal = 1;
+    }
+
+    board = createBoard(numCol, initVal, turn);
     winner = null;
     displayBoard();
 }

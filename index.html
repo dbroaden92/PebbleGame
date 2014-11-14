@@ -2,22 +2,36 @@
 <head>
 <title>Pebble Game</title>
 </head>
-<body onload="loadDefault();">
+<body onload="newGame();">
 <div id="header" class="header">
 <h1>Pebble Game</h1>
 </div>
 
-<div id="state" class="state">
-</div>
-
-<div id="board" class="board">
-</div>
-
-<div id="winner" class="winner">
-</div>
-
 <div id="content" class="content">
+
+    <div id="newgame" class="newgame">
+        <span><b>New Game:</b></span>
+        <table>
+            <tr>
+                <td>Columns:</td>
+                <td><input type="text" id="numcol"></td>
+            </tr>
+            <tr>
+                <td>Initial Value:</td>
+                <td><input type="text" id="initval"></td>
+            </tr>
+        </table>
+        <button onclick="newGame();">New Game</button>
+    </div>
+
+    <div id="board" class="board">
+    </div>
+
+    <div id="winner" class="winner">
+    </div>
+
 </div>
+
 <script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>
