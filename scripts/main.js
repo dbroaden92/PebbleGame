@@ -6,8 +6,11 @@ var board = {
     turn: 0
 };
 var winner = null;
+var timeout = null;
+var running = false;
 
 function newGame(numCol, initVal, turn) {
+    pause();
     numCol = numCol || document.getElementById('numcol').value || 2;
     initVal = initVal || document.getElementById('initval').value || 2;
     turn = turn || PLAYER_A;
@@ -61,7 +64,7 @@ function displayBoard() {
         button.onclick = function() {
             move(this.value);
         };
-        if (checkWinner()) {
+        if (checkWinner() || running) {
             aTd.appendChild(document.createTextNode(board.A[i]));
             aTd.align = 'center';
             bTd.appendChild(document.createTextNode(board.B[i]));
@@ -97,6 +100,60 @@ function displayBoard() {
         boardContainer.removeChild(boardContainer.firstChild);
     }
     boardContainer.appendChild(boardTable);
+}
+
+function run() {
+    if (!checkWinner()) {
+        running = true;
+        move(selectMove());
+        timeout = setTimeout(function() {
+            run();
+        }, 1000);
+        var button = document.getElementById('run_pause');
+        button.onclick = pause;
+        button.innerHTML = 'Pause';
+    } else {
+        pause();
+    }
+}
+
+function pause() {
+    clearTimeout(timeout);
+    running = false;
+    var button = document.getElementById('run_pause');
+    button.onclick = run;
+    button.innerHTML = 'Run';
+    displayBoard();
+}
+
+function step() {
+    pause();
+    if (!checkWinner()) {
+        move(selectMove());
+    }
+}
+
+function selectMove(player) {
+    player = player || board.turn;
+    var index = 0;
+    var min = Number.MAX_VALUE;
+    if (player == PLAYER_A) {
+        for (var i = 0; i < board.A.length; i++) {
+            if (board.A[i] > 0 && board.A[i] - (board.A.length - 1 - i) < min) {
+                min = board.A[i] - (board.A.length - 1 - i);
+                index = i;
+            }
+        }
+    } else {
+        index = board.B.length - 1;
+        for (var i = board.B.length - 1; i >= 0; i--) {
+            if (board.B[i] > 0 && board.B[i] - i < min) {
+                min = board.B[i] - i;
+                index = i;
+            }
+        }
+    }
+    return index;
 }
 
 function move(index) {
