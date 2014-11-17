@@ -21,4 +21,109 @@ body {
 }
 
 .content {
+    margin: auto;
+    width: 500;
+}
+
+.newgame table {
+    margin: auto;
+    padding: 0;
+    width: 300;
+    font-size: 20;
+    font-family: serif;
+    line-height: 0.5;
+    border: 1px solid #000000;
+    border-collapse: collapse;
+}
+
+.newgame .field_name {
+    padding: 5;
+    width: 140;
+    font-size: 20;
+}
+
+.newgame .field_value {
+    border: 1px solid #000000;
+}
+
+.newgame .field_value input {
+    width: 100%;
+    height: 125%;
+    font-size: 18;
+    font-family: serif;
+}
+
+.controls table {
+    margin: auto;
+    padding: 0;
+    width: 300;
+    font-family: serif;
+    line-height: 0.5;
+    border: 1px solid #000000;
+    border-collapse: collapse;
+}
+
+.controls table td {
+    margin: 0;
+    padding: 0;
+}
+
+.controls table .newgame_button {
+    padding: 0;
+    width: 150;
+}
+
+.controls table button {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 25;
+}
+
+.controls .rp_button {
+    width: 70;
+}
+
+.controls .step_button {
+    width: 75;
+}
+
+.board table {
+    margin: 20 auto;
+    padding: 5;
+    font-size: 35;
+    font-family: serif;
+    line-height: 0.5;
+    border: 1px solid #000000;
+}
+
+.board table tr {
+    margin: 0;
+    padding: 0;
+}
+
+.board table tr td {
+    margin: 0;
+    padding: 0;
+    width: 75;
+    height: 75;
+    border: 1px solid #000000;
+}
+
+.board table tr td button {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 105%;
+    font-size: 35;
+    font-family: serif;
+    line-height: 0.5;
+}
+
+.winner {
+    padding: 10 0;
+    text-align: center;
+    font-size: 30;
+    color: #009900;
+    font-weight: bold;
 }

@@ -52,10 +52,6 @@ function displayBoard() {
     var aRow = document.createElement('tr');
     var bRow = document.createElement('tr');
 
-    boardTable.border = 1;
-    boardTable.padding = 0;
-    boardTable.margin = 0;
-
     for (var i = 0; i < board.A.length; i++) {
         var aTd = document.createElement('td');
         var bTd = document.createElement('td');
@@ -108,7 +104,7 @@ function run() {
         move(selectMove());
         timeout = setTimeout(function() {
             run();
-        }, 1000);
+        }, 200);
         var button = document.getElementById('run_pause');
         button.onclick = pause;
         button.innerHTML = 'Pause';
