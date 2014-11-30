@@ -21,6 +21,40 @@ Pebble Game
                 <td class="field_name">Initial Value:</td>
                 <td class="field_value"><input type="text" id="initval"></td>
             </tr>
+            <tr>
+                <td class="field_name">Lookahead:</td>
+                <td class="field_value"><input type="text" id="lookahead"></td>
+            </tr>
+            <tr>
+                <td class="field_name">Players:</td>
+                <td class="field_value">
+                    <select id="gamemode">
+                        <option value=0 selected>Human vs Human</option>
+                        <option value=1>Human vs CPU</option>
+                        <option value=2>CPU vs Human</option>
+                        <option value=3>CPU vs CPU</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="field_name">Delay Speed:</td>
+                <td class="field_value">
+                    <select id="stepdelay" onchange="setDelay();">
+                        <option value=200>Fast</option>
+                        <option value=1200 selected>Normal</option>
+                        <option value=2200>Slow</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="field_name">Autoplay:</td>
+                <td class="field_value">
+                    <select id="autoplay" onchange="setAuto();">
+                        <option value=0 selected>On</option>
+                        <option value=1>Off</option>
+                    </select>
+                </td>
+            </tr>
         </table>
     </div>
 
@@ -38,6 +72,7 @@ Pebble Game
     </div>
 
     <div id="winner" class="winner">
+    <br>
     </div>
 </div>
 
