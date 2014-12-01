@@ -100,11 +100,10 @@ body {
 
 .board table {
     margin: 20 auto;
-    padding: 5;
+    padding: 6;
     font-size: 50;
     font-family: serif;
     line-height: 0.5;
-    border: 1px solid #000000;
     background: #000000;
 }
 
@@ -118,7 +117,6 @@ body {
     padding: 0;
     width: 140;
     height: 140;
-    border: 1px solid #000000;
 }
 
 .board table tr td button {
@@ -131,32 +129,54 @@ body {
     line-height: 0.5;
 }
 
-.board .active {
-    background: #008800;
+.board .a_square {
+    background: #DD550C;
 }
 
-.board .active button {
-    border-color: #008800;
-    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#4DAC4D), to(#005F00));
-    background: -webkit-linear-gradient(#4DAC4D, #005F00);
-    background: -moz-linear-gradient(#4DAC4D, #005F00);
-    background: -ms-linear-gradient(#4DAC4D, #005F00);
-    background: -o-linear-gradient(#4DAC4D, #005F00);
-    background: linear-gradient(#4DAC4D, #005F00);
+.board .a_square button {
+    border-color: #E4773D;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#E06624), to(#9B3B08));
+    background: -webkit-linear-gradient(#E06624, #9B3B08);
+    background: -moz-linear-gradient(#E06624, #9B3B08);
+    background: -ms-linear-gradient(#E06624, #9B3B08);
+    background: -o-linear-gradient(#E06624, #9B3B08);
+    background: linear-gradient(#E06624, #9B3B08);
 }
 
-.board .non_active {
-    background: #CC0000;
+.board .a_prev {
+    background: #853307;
 }
 
-.board .prev {
-    background: #8F0000;
+.board .b_square {
+    background: #03244D;
 }
 
-.winner {
+.board .b_square button {
+    border-color: #355071;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#1C3A5F), to(#021936));
+    background: -webkit-linear-gradient(#1C3A5F, #021936);
+    background: -moz-linear-gradient(#1C3A5F, #021936);
+    background: -ms-linear-gradient(#1C3A5F, #021936);
+    background: -o-linear-gradient(#1C3A5F, #021936);
+    background: linear-gradient(#1C3A5F, #021936);
+}
+
+.board .b_prev {
+    background: #02162E;
+}
+
+.a_winner {
     padding: 10 0;
     text-align: center;
     font-size: 45;
-    color: #009900;
+    color: #DD550C;
+    font-weight: bold;
+}
+
+.b_winner {
+    padding: 10 0;
+    text-align: center;
+    font-size: 45;
+    color: #03244D;
     font-weight: bold;
 }

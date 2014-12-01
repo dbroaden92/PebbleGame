@@ -150,6 +150,8 @@ function displayBoard() {
         var aTd = document.createElement('td');
         var bTd = document.createElement('td');
         var button = document.createElement('button');
+        aTd.className = 'a_square';
+        bTd.className = 'b_square';
         button.value = i;
         button.onclick = function() {
             move(this.value);
@@ -185,16 +187,12 @@ function displayBoard() {
             aTd.align = 'center';
         }
         if (board.turn == PLAYER_A) {
-            aTd.className = 'active';
-            bTd.className = 'non_active';
             if (board.prev == i) {
-                bTd.className = 'prev';
+                bTd.className = 'b_prev';
             }
         } else {
-            bTd.className = 'active';
-            aTd.className = 'non_active';
             if (board.prev == i) {
-                aTd.className = 'prev';
+                aTd.className = 'a_prev';
             }
         }
         aRow.appendChild(aTd);
@@ -456,8 +454,10 @@ function checkWinner(gameBoard) {
         var winElement = document.getElementById('winner');
         if (winner) {
             if (winner == PLAYER_A) {
+                winElement.className = 'a_winner';
                 winElement.innerHTML = 'Player A Wins!';
             } else {
+                winElement.className = 'b_winner';
                 winElement.innerHTML = 'Player B Wins!';
             }
             return true;
