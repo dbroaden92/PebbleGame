@@ -3,7 +3,8 @@ var PLAYER_B = 'B';
 var board = {
     A: [],
     B: [],
-    turn: PLAYER_A
+    turn: PLAYER_A,
+    prev: -1
 };
 var plys = 2;
 var mode = 0;
@@ -17,13 +18,15 @@ function cloneBoard(gameBoard) {
     var newBoard = {
         A:[],
         B:[],
-        turn: PLAYER_B
+        turn: PLAYER_B,
+        prev: -1
     };
     newBoard.A = cloneList(gameBoard.A);
     newBoard.B = cloneList(gameBoard.B);
     if (gameBoard.turn == PLAYER_A) {
         newBoard.turn = PLAYER_A;
     }
+    newBoard.prev = gameBoard.prev;
     return newBoard;
 }
 
@@ -106,10 +109,12 @@ function createBoard(numCol, initVal, turn) {
     initVal = initVal || 2;
     turn = turn || PLAYER_A;
 
-    var newBoard = {};
-    newBoard.A = [];
-    newBoard.B = [];
-    newBoard.turn = turn;
+    var newBoard = {
+        A: [],
+        B: [],
+        turn: turn, 
+        prev: -1
+    };
     for (var i = 0; i < numCol; i++) {
         newBoard.A.push(initVal);
         newBoard.B.push(initVal);
@@ -178,6 +183,19 @@ function displayBoard() {
             }
             aTd.appendChild(document.createTextNode(board.A[i]));
             aTd.align = 'center';
+        }
+        if (board.turn == PLAYER_A) {
+            aTd.className = 'active';
+            bTd.className = 'non_active';
+            if (board.prev == i) {
+                bTd.className = 'prev';
+            }
+        } else {
+            bTd.className = 'active';
+            aTd.className = 'non_active';
+            if (board.prev == i) {
+                aTd.className = 'prev';
+            }
         }
         aRow.appendChild(aTd);
         bRow.appendChild(bTd);
@@ -339,6 +357,7 @@ function move(index, gameBoard) {
         gameBoard = cloneBoard(gameBoard);
     } else {
         gameBoard = board;
+        gameBoard.prev = index;
     }
     if (gameBoard.turn == PLAYER_A) {
         value = gameBoard.A[index];

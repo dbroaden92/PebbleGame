@@ -105,6 +105,7 @@ body {
     font-family: serif;
     line-height: 0.5;
     border: 1px solid #000000;
+    background: #000000;
 }
 
 .board table tr {
@@ -128,6 +129,28 @@ body {
     font-size: 50;
     font-family: serif;
     line-height: 0.5;
+}
+
+.board .active {
+    background: #008800;
+}
+
+.board .active button {
+    border-color: #008800;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#4DAC4D), to(#005F00));
+    background: -webkit-linear-gradient(#4DAC4D, #005F00);
+    background: -moz-linear-gradient(#4DAC4D, #005F00);
+    background: -ms-linear-gradient(#4DAC4D, #005F00);
+    background: -o-linear-gradient(#4DAC4D, #005F00);
+    background: linear-gradient(#4DAC4D, #005F00);
+}
+
+.board .non_active {
+    background: #CC0000;
+}
+
+.board .prev {
+    background: #8F0000;
 }
 
 .winner {
