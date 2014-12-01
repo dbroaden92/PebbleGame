@@ -225,16 +225,17 @@ function step() {
 function alphaBetaSearch(gameBoard, depth) {
     gameBoard = gameBoard || board;
     depth = depth || plys;
-    var maxResult = maxValue(gameBoard, (Number.MAX_VALUE * -1), Number.MAX_VALUE, depth, []);
+    var maxResult = maxValue(gameBoard, (Number.MAX_VALUE * -1), Number.MAX_VALUE, depth, [],
+            gameBoard.turn);
     return maxResult.index;
 }
 
-function maxValue(gameBoard, alpha, beta, depth, prev) {
+function maxValue(gameBoard, alpha, beta, depth, prev, player) {
     gameBoard = cloneBoard(gameBoard);
     prev = cloneList(prev);
     var result = {index: 0, value: -1};
     if (depth == 0 || checkWinner(gameBoard)) {
-        result.value = h1(gameBoard);
+        result.value = h1(gameBoard, player);
         return result;
     }
     var boardHash = hash(gameBoard);
@@ -246,13 +247,8 @@ function maxValue(gameBoard, alpha, beta, depth, prev) {
     prev.push(boardHash);
     result.value = (Number.MAX_VALUE * -1);
     var order = actionOrder(gameBoard);
-    var orderstr = '[';
     for (var i = 0; i < order.length; i++) {
-        orderstr += order[i] + ',';
-    }
-    orderstr += ']';
-    for (var i = 0; i < order.length; i++) {
-        var minResult = minValue(move(order[i], gameBoard), alpha, beta, depth, prev);
+        var minResult = minValue(move(order[i], gameBoard), alpha, beta, depth, prev, player);
         if (minResult.value > result.value) {
             result.value = minResult.value;
             result.index = order[i];
@@ -267,12 +263,12 @@ function maxValue(gameBoard, alpha, beta, depth, prev) {
     return result;
 }
 
-function minValue(gameBoard, alpha, beta, depth, prev) {
+function minValue(gameBoard, alpha, beta, depth, prev, player) {
     gameBoard = cloneBoard(gameBoard);
     prev = cloneList(prev);
     var result = {index: 0, value: -1};
     if (depth == 0 || checkWinner(gameBoard)) {
-        result.value = h1(gameBoard);
+        result.value = h1(gameBoard, player);
         return result;
     }
     var boardHash = hash(gameBoard);
@@ -284,13 +280,8 @@ function minValue(gameBoard, alpha, beta, depth, prev) {
     prev.push(boardHash);
     result.value = Number.MAX_VALUE;
     var order = actionOrder(gameBoard);
-    var orderstr = '[';
     for (var i = 0; i < order.length; i++) {
-        orderstr += order[i] + ',';
-    }
-    orderstr += ']';
-    for (var i = 0; i < order.length; i++) {
-        var maxResult = maxValue(move(order[i], gameBoard), alpha, beta, depth, prev);
+        var maxResult = maxValue(move(order[i], gameBoard), alpha, beta, depth, prev, player);
         if (maxResult.value < result.value) {
             result.value = maxResult.value;
             result.index = order[i];
@@ -323,15 +314,17 @@ function actionOrder(gameBoard) {
     return order;
 }
 
-function h1(gameBoard) {
+function h1(gameBoard, player) {
+    gameBoard = gameBoard || board;
+    player = player || gameBoard.turn;
     var total = 0;
-    if (gameBoard.turn == PLAYER_A) {
-        for (var i = 0; i < gameBoard.B.length; i++) {
-            total += gameBoard.B[i];
-        }
-    } else {
+    if (player == PLAYER_A) {
         for (var i = 0; i < gameBoard.A.length; i++) {
             total += gameBoard.A[i];
+        }
+    } else {
+        for (var i = 0; i < gameBoard.B.length; i++) {
+            total += gameBoard.B[i];
         }
     }
     return total;
