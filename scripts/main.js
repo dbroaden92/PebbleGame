@@ -340,7 +340,8 @@ function andOrSearch(gameBoard, depth){
     var default_result = 1;
     var results = orSearch(gameBoard,plan,[],depth);
     if(results['falure'] == true){
-        return default_result;
+        var move_index = actionOrder(gameBoard);
+        return move_index[0];
     }
 
     //If searh does not fail, go the top of the search path and select that index
