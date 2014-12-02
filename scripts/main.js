@@ -59,7 +59,9 @@ function setAuto(newAuto) {
 }
 
 function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay) {
-    pause();
+    if (running) {
+        pause();
+    }
     numCol = numCol || document.getElementById('numcol').value || 2;
     initVal = initVal || document.getElementById('initval').value || 2;
     lookahead = lookahead || document.getElementById('lookahead').value || 2;
@@ -156,7 +158,7 @@ function displayBoard() {
         button.onclick = function() {
             move(this.value);
         };
-        if (checkWinner()
+        if (checkWinner(board)
                 || (mode == 1 && board.turn == PLAYER_B)
                 || (mode == 2 && board.turn == PLAYER_A)
                 || mode == 3
@@ -201,10 +203,28 @@ function displayBoard() {
 
     boardTable.appendChild(aRow);
     boardTable.appendChild(bRow);
+    boardTable.className = 'game';
     while (boardContainer.firstChild) {
         boardContainer.removeChild(boardContainer.firstChild);
     }
     boardContainer.appendChild(boardTable);
+    checkWinner();
+}
+
+function show() {
+        var setup = document.getElementById('setup');
+        setup.style.display = null;
+        var button = document.getElementById('show_hide');
+        button.onclick = hide;
+        button.innerHTML = 'Hide';
+}
+
+function hide() {
+        var setup = document.getElementById('setup');
+        setup.style.display = 'none';
+        var button = document.getElementById('show_hide');
+        button.onclick = show;
+        button.innerHTML = 'Setup';
 }
 
 function run() {
@@ -451,18 +471,38 @@ function checkWinner(gameBoard) {
         }
     }
     if (update) {
-        var winElement = document.getElementById('winner');
+        var boardContainer = document.getElementById('board');
+        var exists = document.getElementById('win_table');
+        if (exists) {
+            boardContainer.removeChild(exists);
+        }
         if (winner) {
+            var winTable = document.createElement('table');
+            winTable.id = 'win_table';
+            winTable.className = 'win_table';
+            var winMsgRow = document.createElement('tr');
+            var newGameRow = document.createElement('tr');
+            var winMsgTd = document.createElement('td');
+            var newGameTd = document.createElement('td');
+            var newGameButton = document.createElement('button');
+            newGameButton.innerHTML = 'New Game';
+            newGameButton.onclick = function () {
+                newGame(); 
+            };
             if (winner == PLAYER_A) {
-                winElement.className = 'a_winner';
-                winElement.innerHTML = 'Player A Wins!';
+                winMsgTd.appendChild(document.createTextNode('Player A Wins!'));
+                winMsgTd.className = 'a_winner';
             } else {
-                winElement.className = 'b_winner';
-                winElement.innerHTML = 'Player B Wins!';
+                winMsgTd.appendChild(document.createTextNode('Player B Wins!'));
+                winMsgTd.className = 'b_winner';
             }
+            winMsgRow.appendChild(winMsgTd);
+            newGameTd.appendChild(newGameButton);
+            newGameRow.appendChild(newGameTd);
+            winTable.appendChild(winMsgRow);
+            winTable.appendChild(newGameRow);
+            boardContainer.appendChild(winTable);
             return true;
-        } else {
-            winElement.innerHTML = '';
         }
     }
     return false;
