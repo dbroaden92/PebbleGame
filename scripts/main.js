@@ -97,6 +97,10 @@ function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay
         autoplay = true;
     }
 
+    document.getElementById('numcol').value = numCol;
+    document.getElementById('initval').value = initVal;
+    document.getElementById('lookahead').value = lookahead;
+
     board = createBoard(numCol, initVal, turn);
     plys = lookahead;
     mode = gameMode;
