@@ -9,6 +9,7 @@ body {
     margin: auto;
     width: 780;
     height: 100%;
+    overflow: auto;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.75);
 }
@@ -27,7 +28,7 @@ body {
     width: 700;
 }
 
-.newgame table {
+.setup table {
     margin: auto;
     padding: 0;
     width: 300;
@@ -36,29 +37,32 @@ body {
     line-height: 0.5;
     border: 1px solid #000000;
     border-collapse: collapse;
+    line-height: 1.2;
 }
 
-.newgame .field_name {
+.setup .field_name {
     padding: 5;
     width: 140;
     font-size: 20;
 }
 
-.newgame .field_value {
+.setup .field_value {
+    margin: 0;
+    padding: 0;
     border: 1px solid #000000;
 }
 
-.newgame .field_value input {
+.setup .field_value input {
     width: 100%;
-    height: 125%;
+    height: 117%;
     font-size: 18;
     font-family: serif;
     text-align: center;
 }
 
-.newgame .field_value select {
+.setup .field_value select {
     width: 100%;
-    height: 110%;
+    height: 105%;
     font-size: 16;
     font-family: serif;
 }
@@ -78,16 +82,19 @@ body {
     padding: 0;
 }
 
-.controls table .newgame_button {
-    padding: 0;
-    width: 150;
-}
-
 .controls table button {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 25;
+}
+
+.controls .sh_button {
+    width: 75;
+}
+
+.controls .newgame_button {
+    width: 75;
 }
 
 .controls .rp_button {
@@ -98,30 +105,34 @@ body {
     width: 75;
 }
 
-.board table {
-    margin: 20 auto;
+.board {
     padding: 5;
+}
+
+.board .game {
+    margin: 20 auto;
+    padding: 6;
     font-size: 50;
     font-family: serif;
     line-height: 0.5;
-    border: 1px solid #000000;
     background: #000000;
 }
 
-.board table tr {
+.board .game tr {
     margin: 0;
     padding: 0;
 }
 
-.board table tr td {
+.board .game tr td {
     margin: 0;
     padding: 0;
     width: 140;
     height: 140;
-    border: 1px solid #000000;
+    color: #FFFFFF;
+    text-shadow: 3px 3px 5px #000000;
 }
 
-.board table tr td button {
+.board .game tr td button {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -129,34 +140,89 @@ body {
     font-size: 50;
     font-family: serif;
     line-height: 0.5;
+    color: #FFFFFF;
+    text-shadow: 3px 3px 5px #000000;
 }
 
-.board .active {
-    background: #008800;
+.board .a_square {
+    background: #DD550C;
 }
 
-.board .active button {
-    border-color: #008800;
-    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#4DAC4D), to(#005F00));
-    background: -webkit-linear-gradient(#4DAC4D, #005F00);
-    background: -moz-linear-gradient(#4DAC4D, #005F00);
-    background: -ms-linear-gradient(#4DAC4D, #005F00);
-    background: -o-linear-gradient(#4DAC4D, #005F00);
-    background: linear-gradient(#4DAC4D, #005F00);
+.board .a_square button {
+    border-color: #E4773D;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#E06624), to(#9B3B08));
+    background: -webkit-linear-gradient(#E06624, #9B3B08);
+    background: -moz-linear-gradient(#E06624, #9B3B08);
+    background: -ms-linear-gradient(#E06624, #9B3B08);
+    background: -o-linear-gradient(#E06624, #9B3B08);
+    background: linear-gradient(#E06624, #9B3B08);
 }
 
-.board .non_active {
-    background: #CC0000;
+.board .a_prev {
+    background: #853307;
 }
 
-.board .prev {
-    background: #8F0000;
+.board .b_square {
+    background: #03244D;
 }
 
-.winner {
+.board .b_square button {
+    border-color: #355071;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#1C3A5F), to(#021936));
+    background: -webkit-linear-gradient(#1C3A5F, #021936);
+    background: -moz-linear-gradient(#1C3A5F, #021936);
+    background: -ms-linear-gradient(#1C3A5F, #021936);
+    background: -o-linear-gradient(#1C3A5F, #021936);
+    background: linear-gradient(#1C3A5F, #021936);
+}
+
+.board .b_prev {
+    background: #02162E;
+}
+
+.win_table {
+    position: relative;
+    top: -220px;
+    margin: 0 auto -100 auto;
+    padding: 2;
+    font-size: 50;
+    font-family: serif;
+    line-height: 0.5;
+    background: #000000;
+}
+
+.win_table td {
+    width: 220px;
+    height: 45px;
+}
+
+.win_table button {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 115%;
+    font-size: 28;
+    font-family: serif;
+    line-height: 0.5;
+    color: #000000;
+}
+
+.a_winner {
     padding: 10 0;
     text-align: center;
-    font-size: 45;
-    color: #009900;
+    font-size: 28;
+    color: #FFFFFF;
+    text-shadow: 3px 3px 5px #000000;
+    background: #DD550C;
+    font-weight: bold;
+}
+
+.b_winner {
+    padding: 10 0;
+    text-align: center;
+    font-size: 28;
+    color: #FFFFFF;
+    text-shadow: 3px 3px 5px #000000;
+    background: #03244D;
     font-weight: bold;
 }

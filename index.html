@@ -11,19 +11,19 @@ Pebble Game
 </div>
 
 <div id="content" class="content">
-    <div id="newgame" class="newgame">
+    <div id="setup" class="setup">
         <table>
             <tr>
                 <td class="field_name">Columns:</td>
-                <td class="field_value"><input type="text" id="numcol"></td>
+                <td class="field_value"><input type="number" id="numcol"></td>
             </tr>
             <tr>
                 <td class="field_name">Initial Value:</td>
-                <td class="field_value"><input type="text" id="initval"></td>
+                <td class="field_value"><input type="number" id="initval"></td>
             </tr>
             <tr>
                 <td class="field_name">Lookahead:</td>
-                <td class="field_value"><input type="text" id="lookahead"></td>
+                <td class="field_value"><input type="number" id="lookahead"></td>
             </tr>
             <tr>
                 <td class="field_name">Players:</td>
@@ -61,6 +61,7 @@ Pebble Game
     <div id="controls" class="controls">
         <table>
             <tr>
+                <td class="sh_button"><button id="show_hide" onclick="hide();">Hide</button></td>
                 <td class="newgame_button"><button onclick="newGame();">New Game</button></td>
                 <td class="rp_button"><button id="run_pause" onclick="run();">Run</button></td>
                 <td class="step_button"><button onclick="step();">Step</button></td>
@@ -70,11 +71,9 @@ Pebble Game
 
     <div id="board" class="board">
     </div>
-
-    <div id="winner" class="winner">
-    <br>
-    </div>
 </div>
+
+<div class="filler"></div>
 
 </div>
 <script type="text/javascript" src="scripts/main.js"></script>
