@@ -217,7 +217,7 @@ function displayBoard() {
 
 function show() {
         var setup = document.getElementById('setup');
-        setup.style.display = null;
+        setup.style.maxHeight = '210';
         var button = document.getElementById('show_hide');
         button.onclick = hide;
         button.innerHTML = 'Hide';
@@ -225,10 +225,10 @@ function show() {
 
 function hide() {
         var setup = document.getElementById('setup');
-        setup.style.display = 'none';
+        setup.style.maxHeight = '0';
         var button = document.getElementById('show_hide');
         button.onclick = show;
-        button.innerHTML = 'Setup';
+        button.innerHTML = 'Settings';
 }
 
 function run() {

@@ -15,14 +15,58 @@ body {
 }
 
 .header {
-    padding: 20 0 10 0;
+    padding: 10 0;
     margin: auto;
     width: auto;
     text-align: center;
+    line-height: 1.2;
     font-size: 40;
     font-weight: bold;
     color: #FFFFFF;
-    background-color: #000000;
+    text-shadow: 5px 5px 2px #000000;
+    background: #000000;
+    background: -webkit-gradient(linear, left top, left bottom,
+        color-stop(0%, #E06624),
+        color-stop(45%, #853307),
+        color-stop(46%, #000000),
+        color-stop(54%, #000000),
+        color-stop(55%, #1C3A5F),
+        color-stop(100%, #02162E));
+    background: -webkit-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: -moz-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: -ms-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: -o-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: linear-gradient(to bottom,
+        #E06624 0%,
+        #853307 48%,
+        #000000 49%,
+        #000000 51%,
+        #1C3A5F 52%,
+        #02162E 100%);
 }
 
 .content {
@@ -33,6 +77,14 @@ body {
 .setup {
     padding: 10 0 10 0;
     margin: 0 0 -23 0;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    -webkit-transition: max-height 0.75s;
+    -moz-transition: max-height 0.75s;
+    -ms-transition: max-height 0.75s;
+    -o-transition: max-height 0.75s;
+    transition: max-height 0.75s;
 }
 
 .setup table {
@@ -82,6 +134,8 @@ body {
 
 .controls {
     padding: 10 0;
+    position: relative;
+    z-index: 2;
 }
 
 .controls table {
@@ -115,20 +169,20 @@ body {
     background: linear-gradient(#FFFFFF, #CCCCCC);
 }
 
-.controls .sh_button {
-    width: 64;
-}
-
 .controls .newgame_button {
     width: 106;
 }
 
 .controls .rp_button {
-    width: 62;
+    width: 55;
 }
 
 .controls .step_button {
-    width: 63;
+    width: 50;
+}
+
+.controls .sh_button {
+    width: 84;
 }
 
 .board {
