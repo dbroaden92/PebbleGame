@@ -230,7 +230,7 @@ function hide() {
 function run() {
     if (!checkWinner()) {
         running = true;
-        if (board.turn == PLAYER_B) {
+        if (board.turn == PLAYER_A) {
             move(alphaBetaSearch());
         } else {
             move(andOrSearch());
@@ -258,7 +258,7 @@ function pause() {
 function step() {
     pause();
     if (!checkWinner()) {
-        if (board.turn == PLAYER_B) {
+        if (board.turn == PLAYER_A) {
             move(alphaBetaSearch());
         } else {
             move(andOrSearch());
@@ -400,7 +400,6 @@ function orSearch( gameBoard, plan, trail, depth){
 function andSearch(gameBoard, plan, trail, depth){
     // plan = cloneList(plan);
     gameBoard = cloneBoard(gameBoard);
-    console.log("And Searh: "+ plan);
 
     //Depth and Goal State
     if(checkWinner(gameBoard)){
@@ -451,7 +450,6 @@ function h1(gameBoard, player) {
 }
 
 function move(index, gameBoard) {
-    var player = board.turn;
     var value = 0;
     var update = true;
     if (gameBoard) {
@@ -461,6 +459,7 @@ function move(index, gameBoard) {
         gameBoard = board;
         gameBoard.prev = index;
     }
+    var player = gameBoard.turn;
     if (gameBoard.turn == PLAYER_A) {
         value = gameBoard.A[index];
         gameBoard.A[index] = 0;
@@ -543,8 +542,8 @@ function checkWinner(gameBoard) {
         }
     } else {
         var bSum = 0;
-        for (var i = 0; i < board.B.length; i++) {
-            bSum += board.B[i];
+        for (var i = 0; i < gameBoard.B.length; i++) {
+            bSum += gameBoard.B[i];
         }
         if (bSum == 0) {
             if (update) {
