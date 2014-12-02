@@ -230,7 +230,11 @@ function hide() {
 function run() {
     if (!checkWinner()) {
         running = true;
-        move(alphaBetaSearch());
+        if (board.turn == PLAYER_B) {
+            move(alphaBetaSearch());
+        } else {
+            move(andOrSearch());
+        }
         timeout = setTimeout(function() {
             run();
         }, delay);
@@ -254,7 +258,11 @@ function pause() {
 function step() {
     pause();
     if (!checkWinner()) {
-        move(alphaBetaSearch());
+        if (board.turn == PLAYER_B) {
+            move(alphaBetaSearch());
+        } else {
+            move(andOrSearch());
+        }
     }
 }
 
