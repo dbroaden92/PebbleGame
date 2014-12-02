@@ -230,7 +230,7 @@ function hide() {
 function run() {
     if (!checkWinner()) {
         running = true;
-        move(andOrSearch());
+        move(alphaBetaSearch());
         timeout = setTimeout(function() {
             run();
         }, delay);
@@ -254,7 +254,7 @@ function pause() {
 function step() {
     pause();
     if (!checkWinner()) {
-        move(andOrSearch());
+        move(alphaBetaSearch());
     }
 }
 
@@ -562,7 +562,7 @@ function checkWinner(gameBoard) {
             var newGameButton = document.createElement('button');
             newGameButton.innerHTML = 'New Game';
             newGameButton.onclick = function () {
-                newGame(); 
+                newGame();
             };
             if (winner == PLAYER_A) {
                 winMsgTd.appendChild(document.createTextNode('Player A Wins!'));
