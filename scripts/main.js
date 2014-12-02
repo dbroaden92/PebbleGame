@@ -112,7 +112,7 @@ function createBoard(numCol, initVal, turn) {
     var newBoard = {
         A: [],
         B: [],
-        turn: turn, 
+        turn: turn,
         prev: -1
     };
     for (var i = 0; i < numCol; i++) {
@@ -129,7 +129,7 @@ function hash(gameBoard) {
     var bStr = 'B:';
     for (var i = 0; i < gameBoard.A.length; i++) {
         aStr += gameBoard.A[i] + '/';
-        bStr += gameBoard.B[i] + '/'; 
+        bStr += gameBoard.B[i] + '/';
     }
     str += aStr + '-' + bStr;
     var turnStr = 'turn:B';
@@ -212,7 +212,7 @@ function displayBoard() {
 function run() {
     if (!checkWinner()) {
         running = true;
-        move(alphaBetaSearch());
+        move(andOrSearch());
         timeout = setTimeout(function() {
             run();
         }, delay);
@@ -236,7 +236,7 @@ function pause() {
 function step() {
     pause();
     if (!checkWinner()) {
-        move(alphaBetaSearch());
+        move(andOrSearch());
     }
 }
 
@@ -312,6 +312,81 @@ function minValue(gameBoard, alpha, beta, depth, prev, player) {
         }
     }
     return result;
+}
+
+//Select the best index for the player to move
+function andOrSearch(gameBoard, depth){
+    gameBoard = gameBoard || board;
+    depth = depth || plys;
+    plan = [];
+    var default_result = 1;
+    var results = orSearch(gameBoard,plan,[],depth);
+    if(results['falure'] == true){
+        return default_result;
+    }
+
+    //If searh does not fail, go the top of the search path and select that index
+    if (plan[plan.length -1]['index'] == null){
+        return default_result;
+    }
+    return plan[plan.length -1]['index'];
+}
+
+//Players moves
+function orSearch( gameBoard, plan, trail, depth){
+    //plan = cloneList(plan);
+    trail = cloneList(trail);
+    gameBoard = cloneBoard(gameBoard);
+
+    //Depth and Goal State
+    if(checkWinner(gameBoard)){
+        plan.push({falure:false,indexe:null});
+        return {falure:false,index:null, part:1};
+    }
+
+    //Current state is on path
+    var board_hash = hash(gameBoard);
+    if(trail.indexOf(board_hash) > 0){
+        plan.push({falure:true, index:null});
+        return {falure:true, index:null , part:2};
+    }
+
+    trail.push(board_hash);
+
+    //Each Posible Action
+    var move_index = actionOrder(gameBoard);
+    for (var i = 0; i < move_index.length; i++){
+        var plan_results = andSearch(move(move_index[i], gameBoard),plan,trail,depth);
+        if(plan_results['falure'] != true){
+            if(plan_results['array'] != undefined){
+                plan.concat(plan_results['array']);
+            }
+            plan.push({falure:false, index:move_index[i]});
+            return {falure:false, index:move_index[i], part:3, array: plan};
+        }
+    }
+    plan.push({falure:true, index:null});
+    return {falure:true, index:null, part:4};
+}
+
+//Opponents moves
+function andSearch(gameBoard, plan, trail, depth){
+    // plan = cloneList(plan);
+    gameBoard = cloneBoard(gameBoard);
+    console.log("And Searh: "+ plan);
+
+    //Depth and Goal State
+    if(checkWinner(gameBoard)){
+        plan.push({falure:false, index:null});
+        return {falure:true, index:null, part:5};
+    }
+
+    //Each Posible Action
+    var move_index = actionOrder(gameBoard);
+    for (var i = 0; i < move_index.length; i++){
+        return orSearch(move(move_index[i], gameBoard),plan,trail,depth);
+    }
+    return {falure:false, index:null, part:6};
 }
 
 function actionOrder(gameBoard) {
