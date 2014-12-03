@@ -13,6 +13,8 @@ var auto = true;
 var winner = null;
 var timeout = null;
 var running = false;
+var prevBoards = [];
+var addToPrev = true;
 
 function cloneBoard(gameBoard) {
     var newBoard = {
@@ -107,6 +109,8 @@ function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay
     delay = stepDelay;
     auto = autoplay;
     winner = null;
+    prevBoards = [];
+    addToPrev = true;
     displayBoard();
 }
 
@@ -499,6 +503,16 @@ function move(index, gameBoard) {
     }
     gameBoard = distribute(player, index, value, gameBoard);
     if (update) {
+        var boardHash = hash(gameBoard);
+        if (addToPrev && prevBoards.indexOf(boardHash) > -1) {
+            console.log('Game Loop Detected');
+            console.log('# Moves: ' + (prevBoards.length + 1));
+            console.log('Board Hash: ' + boardHash);
+            addToPrev = false;
+        }
+        if (addToPrev) {
+            prevBoards.push(boardHash);
+        }
         displayBoard();
     }
     return gameBoard;
