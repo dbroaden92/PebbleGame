@@ -343,77 +343,67 @@ function minValue(gameBoard, alpha, beta, depth, prev, player) {
 //Select the best index for the player to move
 function andOrSearch(gameBoard, depth){
     gameBoard = gameBoard || board;
-    depth = depth || plys;
-    plan = [];
-    var default_result = 1;
-    var results = orSearch(gameBoard,plan,[],depth);
-    if(results['falure'] == true){
-        var move_index = actionOrder(gameBoard);
-        return move_index[0];
-    }
+    depth = depth * 2  || plys * 2;
 
-    //If searh does not fail, go the top of the search path and select that index
-    if (plan[plan.length -1]['index'] == null){
-        return default_result;
-    }
-    return plan[plan.length -1]['index'];
+    var results = orSearch(gameBoard,[],depth);
+    return results.index;
 }
 
-//Players moves
-function orSearch( gameBoard, plan, trail, depth){
-    //plan = cloneList(plan);
+function orSearch(gameBoard, trail, depth){
+
     trail = cloneList(trail);
     gameBoard = cloneBoard(gameBoard);
 
     //Depth and Goal State
-    if(checkWinner(gameBoard)){
-        plan.push({falure:false,indexe:null});
-        return {falure:false,index:null, part:1};
+    if(depth == 0 || checkWinner(gameBoard)){
+        return {index:null, weight: h1(gameBoard, gameBoard.turn)};
     }
 
     //Current state is on path
     var board_hash = hash(gameBoard);
     if(trail.indexOf(board_hash) > 0){
-        plan.push({falure:true, index:null});
-        return {falure:true, index:null , part:2};
+        return {index:null, weight:0};
     }
 
+    depth--;
     trail.push(board_hash);
 
     //Each Posible Action
+    var best_move = {index:0, weight:0};
     var move_index = actionOrder(gameBoard);
     for (var i = 0; i < move_index.length; i++){
-        var plan_results = andSearch(move(move_index[i], gameBoard),plan,trail,depth);
-        if(plan_results['falure'] != true){
-            if(plan_results['array'] != undefined){
-                plan.concat(plan_results['array']);
-            }
-            plan.push({falure:false, index:move_index[i]});
-            return {falure:false, index:move_index[i], part:3, array: plan};
+        var and_results = andSearch(move(move_index[i], gameBoard),trail,depth);
+        console.log("And Results: " + and_results + "Depth: " + depth);
+        if(and_results > best_move.weight){
+            best_move.index = move_index[i];
+            best_move.weight = and_results;
         }
     }
-    plan.push({falure:true, index:null});
-    return {falure:true, index:null, part:4};
+    if (best_move.weight == 0){
+        best_move.index = move_index[0];
+    }
+    return best_move;
 }
 
-//Opponents moves
-function andSearch(gameBoard, plan, trail, depth){
-    // plan = cloneList(plan);
+function andSearch(gameBoard, trail, depth){
     gameBoard = cloneBoard(gameBoard);
-    console.log("And Searh: "+ plan);
 
     //Depth and Goal State
-    if(checkWinner(gameBoard)){
-        plan.push({falure:false, index:null});
-        return {falure:true, index:null, part:5};
+    if(depth == 0 || checkWinner(gameBoard)){
+        return 0;
     }
 
-    //Each Posible Action
+    depth--;
+
+    //Each Posible Action, assumes opponent makes random decision
     var move_index = actionOrder(gameBoard);
+    var sum = 0;
+    var or_resutls;
     for (var i = 0; i < move_index.length; i++){
-        return orSearch(move(move_index[i], gameBoard),plan,trail,depth);
+        or_results = orSearch(move(move_index[i], gameBoard),trail,depth);
+        sum += (1/move_index.length) *  or_results.weight;
     }
-    return {falure:false, index:null, part:6};
+    return sum;
 }
 
 function actionOrder(gameBoard) {
