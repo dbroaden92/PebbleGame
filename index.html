@@ -11,7 +11,7 @@ Pebble Game
 </div>
 
 <div id="content" class="content">
-    <div id="setup" class="setup">
+    <div id="setup" class="setup" style="max-height: 0">
         <table>
             <tr>
                 <td class="field_name">Columns:</td>
@@ -61,10 +61,10 @@ Pebble Game
     <div id="controls" class="controls">
         <table>
             <tr>
-                <td class="sh_button"><button id="show_hide" onclick="hide();">Hide</button></td>
                 <td class="newgame_button"><button onclick="newGame();">New Game</button></td>
                 <td class="rp_button"><button id="run_pause" onclick="run();">Run</button></td>
                 <td class="step_button"><button onclick="step();">Step</button></td>
+                <td class="sh_button"><button id="show_hide" onclick="show();">Settings</button></td>
             </tr>
         </table>
     </div>
@@ -72,8 +72,6 @@ Pebble Game
     <div id="board" class="board">
     </div>
 </div>
-
-<div class="filler"></div>
 
 </div>
 <script type="text/javascript" src="scripts/main.js"></script>

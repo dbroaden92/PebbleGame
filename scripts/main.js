@@ -13,6 +13,8 @@ var auto = true;
 var winner = null;
 var timeout = null;
 var running = false;
+var prevBoards = [];
+var addToPrev = true;
 
 function cloneBoard(gameBoard) {
     var newBoard = {
@@ -97,12 +99,18 @@ function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay
         autoplay = true;
     }
 
+    document.getElementById('numcol').value = numCol;
+    document.getElementById('initval').value = initVal;
+    document.getElementById('lookahead').value = lookahead;
+
     board = createBoard(numCol, initVal, turn);
     plys = lookahead;
     mode = gameMode;
     delay = stepDelay;
     auto = autoplay;
     winner = null;
+    prevBoards = [];
+    addToPrev = true;
     displayBoard();
 }
 
@@ -213,7 +221,7 @@ function displayBoard() {
 
 function show() {
         var setup = document.getElementById('setup');
-        setup.style.display = null;
+        setup.style.maxHeight = '210';
         var button = document.getElementById('show_hide');
         button.onclick = hide;
         button.innerHTML = 'Hide';
@@ -221,16 +229,16 @@ function show() {
 
 function hide() {
         var setup = document.getElementById('setup');
-        setup.style.display = 'none';
+        setup.style.maxHeight = '0';
         var button = document.getElementById('show_hide');
         button.onclick = show;
-        button.innerHTML = 'Setup';
+        button.innerHTML = 'Settings';
 }
 
 function run() {
     if (!checkWinner()) {
         running = true;
-        if (board.turn == PLAYER_B) {
+        if (board.turn == PLAYER_A) {
             move(alphaBetaSearch());
         } else {
             move(andOrSearch());
@@ -258,7 +266,7 @@ function pause() {
 function step() {
     pause();
     if (!checkWinner()) {
-        if (board.turn == PLAYER_B) {
+        if (board.turn == PLAYER_A) {
             move(alphaBetaSearch());
         } else {
             move(andOrSearch());
@@ -441,7 +449,6 @@ function h1(gameBoard, player) {
 }
 
 function move(index, gameBoard) {
-    var player = board.turn;
     var value = 0;
     var update = true;
     if (gameBoard) {
@@ -451,6 +458,7 @@ function move(index, gameBoard) {
         gameBoard = board;
         gameBoard.prev = index;
     }
+    var player = gameBoard.turn;
     if (gameBoard.turn == PLAYER_A) {
         value = gameBoard.A[index];
         gameBoard.A[index] = 0;
@@ -486,6 +494,16 @@ function move(index, gameBoard) {
     }
     gameBoard = distribute(player, index, value, gameBoard);
     if (update) {
+        var boardHash = hash(gameBoard);
+        if (addToPrev && prevBoards.indexOf(boardHash) > -1) {
+            console.log('Game Loop Detected');
+            console.log('# Moves: ' + (prevBoards.length + 1));
+            console.log('Board Hash: ' + boardHash);
+            addToPrev = false;
+        }
+        if (addToPrev) {
+            prevBoards.push(boardHash);
+        }
         displayBoard();
     }
     return gameBoard;
@@ -533,8 +551,8 @@ function checkWinner(gameBoard) {
         }
     } else {
         var bSum = 0;
-        for (var i = 0; i < board.B.length; i++) {
-            bSum += board.B[i];
+        for (var i = 0; i < gameBoard.B.length; i++) {
+            bSum += gameBoard.B[i];
         }
         if (bSum == 0) {
             if (update) {

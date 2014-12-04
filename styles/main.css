@@ -5,9 +5,9 @@ body {
 }
 
 .page {
-    padding: 0 10;
+    padding: 0;
     margin: auto;
-    width: 780;
+    width: 800;
     height: 100%;
     overflow: auto;
     background-color: #FFFFFF;
@@ -15,17 +15,76 @@ body {
 }
 
 .header {
-    padding: 20 0 10 0;
+    padding: 10 0;
     margin: auto;
-    width: 400;
+    width: auto;
     text-align: center;
+    line-height: 1.2;
     font-size: 40;
     font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: 5px 5px 2px #000000;
+    background: #000000;
+    background: -webkit-gradient(linear, left top, left bottom,
+        color-stop(0%, #E06624),
+        color-stop(45%, #853307),
+        color-stop(46%, #000000),
+        color-stop(54%, #000000),
+        color-stop(55%, #1C3A5F),
+        color-stop(100%, #02162E));
+    background: -webkit-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: -moz-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: -ms-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: -o-linear-gradient(top,
+        #E06624 0%,
+        #853307 45%,
+        #000000 46%,
+        #000000 54%,
+        #1C3A5F 55%,
+        #02162E 100%);
+    background: linear-gradient(to bottom,
+        #E06624 0%,
+        #853307 48%,
+        #000000 49%,
+        #000000 51%,
+        #1C3A5F 52%,
+        #02162E 100%);
 }
 
 .content {
     margin: auto;
-    width: 700;
+    width: 780;
+}
+
+.setup {
+    padding: 10 0 10 0;
+    margin: 0 0 -23 0;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    -webkit-transition: max-height 0.75s;
+    -moz-transition: max-height 0.75s;
+    -ms-transition: max-height 0.75s;
+    -o-transition: max-height 0.75s;
+    transition: max-height 0.75s;
 }
 
 .setup table {
@@ -35,14 +94,14 @@ body {
     font-size: 20;
     font-family: serif;
     line-height: 0.5;
-    border: 1px solid #000000;
+    border: 3px solid #000000;
     border-collapse: collapse;
     line-height: 1.2;
 }
 
 .setup .field_name {
     padding: 5;
-    width: 140;
+    width: 137;
     font-size: 20;
 }
 
@@ -60,6 +119,12 @@ body {
     text-align: center;
 }
 
+.setup .field_value input[type=number]::-webkit-inner-spin-button,
+.setup .field_value input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .setup .field_value select {
     width: 100%;
     height: 105%;
@@ -67,13 +132,19 @@ body {
     font-family: serif;
 }
 
+.controls {
+    padding: 10 0;
+    position: relative;
+    z-index: 2;
+}
+
 .controls table {
     margin: auto;
-    padding: 0;
     width: 300;
     font-family: serif;
     line-height: 0.5;
-    border: 1px solid #000000;
+    border: 3px solid #000000;
+    background: #000000;
     border-collapse: collapse;
 }
 
@@ -87,31 +158,40 @@ body {
     padding: 0;
     width: 100%;
     height: 25;
-}
-
-.controls .sh_button {
-    width: 75;
+    font-size: 17;
+    font-family: serif;
+    border: 0;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#FFFFFF), to(#CCCCCC));
+    background: -webkit-linear-gradient(#FFFFFF, #CCCCCC);
+    background: -moz-linear-gradient(#FFFFFF, #CCCCCC);
+    background: -ms-linear-gradient(#FFFFFF, #CCCCCC);
+    background: -o-linear-gradient(#FFFFFF, #CCCCCC);
+    background: linear-gradient(#FFFFFF, #CCCCCC);
 }
 
 .controls .newgame_button {
-    width: 75;
+    width: 106;
 }
 
 .controls .rp_button {
-    width: 70;
+    width: 55;
 }
 
 .controls .step_button {
-    width: 75;
+    width: 54;
+}
+
+.controls .sh_button {
+    width: 84;
 }
 
 .board {
-    padding: 5;
+    padding: 0 0 15 0;
 }
 
 .board .game {
-    margin: 20 auto;
-    padding: 6;
+    margin: 0 auto;
+    padding: 7;
     font-size: 50;
     font-family: serif;
     line-height: 0.5;
@@ -182,7 +262,7 @@ body {
 
 .win_table {
     position: relative;
-    top: -220px;
+    top: -200px;
     margin: 0 auto -100 auto;
     padding: 2;
     font-size: 50;
@@ -202,11 +282,10 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 107%;
+    height: 110%;
     font-size: 28;
     font-family: serif;
     line-height: 0.5;
-    color: #000000;
 }
 
 .a_winner {
