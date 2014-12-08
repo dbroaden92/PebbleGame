@@ -16,6 +16,7 @@ var running = false;
 var prevBoards = [];
 var addToPrev = true;
 
+// Make a deep copy of the given game board.
 function cloneBoard(gameBoard) {
     var newBoard = {
         A:[],
@@ -32,6 +33,7 @@ function cloneBoard(gameBoard) {
     return newBoard;
 }
 
+// Make a copy of the given list.
 function cloneList(list) {
     var newList = [];
     for (var i = 0; i < list.length; i++) {
@@ -40,6 +42,7 @@ function cloneList(list) {
     return newList;
 }
 
+// Set the delay between steps while running.
 function setDelay(newDelay) {
     newDelay = newDelay || document.getElementById('stepdelay').value || 1200;
     if (newDelay < 200) {
@@ -51,6 +54,7 @@ function setDelay(newDelay) {
     }
 }
 
+// Set autoplay for the computer to on or off.
 function setAuto(newAuto) {
     newAuto = newAuto || document.getElementById('autoplay').value || 0;
     if (newAuto == 0) {
@@ -60,10 +64,13 @@ function setAuto(newAuto) {
     }
 }
 
+// reset the board and set up a new game.
 function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay) {
     if (running) {
         pause();
     }
+
+    // Get data from the user input fields.
     numCol = numCol || document.getElementById('numcol').value || 2;
     initVal = initVal || document.getElementById('initval').value || 2;
     lookahead = lookahead || document.getElementById('lookahead').value || 2;
@@ -72,6 +79,7 @@ function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay
     autoplay = autoplay || document.getElementById('autoplay').value || 0;
     turn = turn || PLAYER_A;
 
+    // Input clamping.
     if (numCol < 1) {
         numCol = 1;
     } else if (numCol > 10) {
@@ -103,6 +111,7 @@ function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay
     document.getElementById('initval').value = initVal;
     document.getElementById('lookahead').value = lookahead;
 
+    // Game setup.
     board = createBoard(numCol, initVal, turn);
     plys = lookahead;
     mode = gameMode;
@@ -114,6 +123,7 @@ function newGame(numCol, initVal, lookahead, turn, gameMode, stepDelay, autoplay
     displayBoard();
 }
 
+// Create a new board with the specified number of columns each with the initial value.
 function createBoard(numCol, initVal, turn) {
     numCol = numCol || 2;
     initVal = initVal || 2;
@@ -133,6 +143,7 @@ function createBoard(numCol, initVal, turn) {
     return newBoard;
 }
 
+// String hash of the given game board state.
 function hash(gameBoard) {
     var str = '';
     var aStr = 'A:';
@@ -150,12 +161,14 @@ function hash(gameBoard) {
     return str;
 }
 
+// Update the displayed board to the current board's state.
 function displayBoard() {
     var boardContainer = document.getElementById('board');
     var boardTable = document.createElement('table');
     var aRow = document.createElement('tr');
     var bRow = document.createElement('tr');
 
+    // Iterate through each column.
     for (var i = 0; i < board.A.length; i++) {
         var aTd = document.createElement('td');
         var bTd = document.createElement('td');
@@ -171,6 +184,7 @@ function displayBoard() {
                 || (mode == 2 && board.turn == PLAYER_A)
                 || mode == 3
                 || running) {
+            // Don't add a button.
             aTd.appendChild(document.createTextNode(board.A[i]));
             aTd.align = 'center';
             bTd.appendChild(document.createTextNode(board.B[i]));
@@ -196,6 +210,8 @@ function displayBoard() {
             aTd.appendChild(document.createTextNode(board.A[i]));
             aTd.align = 'center';
         }
+
+        // Mark the previous move.
         if (board.turn == PLAYER_A) {
             if (board.prev == i) {
                 bTd.className = 'b_prev';
@@ -212,6 +228,8 @@ function displayBoard() {
     boardTable.appendChild(aRow);
     boardTable.appendChild(bRow);
     boardTable.className = 'game';
+
+    // Remove the previous board and anything else.
     while (boardContainer.firstChild) {
         boardContainer.removeChild(boardContainer.firstChild);
     }
@@ -219,6 +237,7 @@ function displayBoard() {
     checkWinner();
 }
 
+// Show the settings menu.
 function show() {
         var setup = document.getElementById('setup');
         setup.style.maxHeight = '210';
@@ -227,6 +246,7 @@ function show() {
         button.innerHTML = 'Hide';
 }
 
+// Hide the settings menu.
 function hide() {
         var setup = document.getElementById('setup');
         setup.style.maxHeight = '0';
@@ -235,6 +255,7 @@ function hide() {
         button.innerHTML = 'Settings';
 }
 
+// Run automatically with the CPUs playing against each other.
 function run() {
     if (!checkWinner()) {
         running = true;
@@ -254,6 +275,7 @@ function run() {
     }
 }
 
+// Stop running automatically.
 function pause() {
     clearTimeout(timeout);
     running = false;
@@ -263,6 +285,7 @@ function pause() {
     displayBoard();
 }
 
+// Step once, taking the move specified by the CPU.
 function step() {
     pause();
     if (!checkWinner()) {
@@ -274,6 +297,7 @@ function step() {
     }
 }
 
+// Minimax algorithm search for the best move with alphabeta pruning.
 function alphaBetaSearch(gameBoard, depth) {
     gameBoard = gameBoard || board;
     depth = depth || plys;
@@ -282,6 +306,7 @@ function alphaBetaSearch(gameBoard, depth) {
     return maxResult.index;
 }
 
+// MAX-VALUE function for Minimax algorithm.
 function maxValue(gameBoard, alpha, beta, depth, prev, player) {
     gameBoard = cloneBoard(gameBoard);
     prev = cloneList(prev);
@@ -315,6 +340,7 @@ function maxValue(gameBoard, alpha, beta, depth, prev, player) {
     return result;
 }
 
+// MIN-VALUE function for Minimax algorithm.
 function minValue(gameBoard, alpha, beta, depth, prev, player) {
     gameBoard = cloneBoard(gameBoard);
     prev = cloneList(prev);
@@ -348,7 +374,7 @@ function minValue(gameBoard, alpha, beta, depth, prev, player) {
     return result;
 }
 
-//Select the best index for the player to move
+// AND-OR algorithm search for the best move.
 function andOrSearch(gameBoard, depth){
     gameBoard = gameBoard || board;
     depth = depth * 2  || plys * 2;
@@ -357,6 +383,7 @@ function andOrSearch(gameBoard, depth){
     return results.index;
 }
 
+// OR-SEARCH function for AND-OR algorithm.
 function orSearch(gameBoard, trail, depth){
 
     trail = cloneList(trail);
@@ -381,7 +408,7 @@ function orSearch(gameBoard, trail, depth){
     var move_index = actionOrder(gameBoard);
     for (var i = 0; i < move_index.length; i++){
         var and_results = andSearch(move(move_index[i], gameBoard),trail,depth);
-        console.log("And Results: " + and_results + "Depth: " + depth);
+//        console.log("And Results: " + and_results + "Depth: " + depth);
         if(and_results > best_move.weight){
             best_move.index = move_index[i];
             best_move.weight = and_results;
@@ -393,6 +420,7 @@ function orSearch(gameBoard, trail, depth){
     return best_move;
 }
 
+// AND-SEARCH function for AND-OR algorithm.
 function andSearch(gameBoard, trail, depth){
     gameBoard = cloneBoard(gameBoard);
 
@@ -414,6 +442,7 @@ function andSearch(gameBoard, trail, depth){
     return sum;
 }
 
+// Returns the order for the algorithms to evaluate potential moves.
 function actionOrder(gameBoard) {
     var order = [];
     if (gameBoard.turn == PLAYER_A) {
@@ -432,6 +461,7 @@ function actionOrder(gameBoard) {
     return order;
 }
 
+// Heuristic for evaluating a game board state.
 function h1(gameBoard, player) {
     gameBoard = gameBoard || board;
     player = player || gameBoard.turn;
@@ -448,6 +478,7 @@ function h1(gameBoard, player) {
     return total;
 }
 
+// Make the specified move on a game board.
 function move(index, gameBoard) {
     var value = 0;
     var update = true;
@@ -458,8 +489,10 @@ function move(index, gameBoard) {
         gameBoard = board;
         gameBoard.prev = index;
     }
+    // The player whose squares to begin the pebble distribution.
     var player = gameBoard.turn;
     if (gameBoard.turn == PLAYER_A) {
+        // Collect the pebbles and empty the square.
         value = gameBoard.A[index];
         gameBoard.A[index] = 0;
         if (index < gameBoard.A.length - 1) {
@@ -467,6 +500,7 @@ function move(index, gameBoard) {
         } else {
             player = PLAYER_B;
         }
+        // The CPU will make it's next move after a delay if autoplay is on.
         if (update && !running && auto && mode == 1) {
             timeout = setTimeout(function() {
                 if (!checkWinner()) {
@@ -476,6 +510,7 @@ function move(index, gameBoard) {
         }
         gameBoard.turn = PLAYER_B;
     } else {
+        // Collect the pebbles and empty the square.
         value = gameBoard.B[index];
         gameBoard.B[index] = 0;
         if (index > 0) {
@@ -483,6 +518,7 @@ function move(index, gameBoard) {
         } else {
             player = PLAYER_A;
         }
+        // The CPU will make it's next move after a delay if autoplay is on.
         if (update && !running && auto && mode == 2) {
             timeout = setTimeout(function() {
                 if (!checkWinner()) {
@@ -492,8 +528,10 @@ function move(index, gameBoard) {
         }
         gameBoard.turn = PLAYER_A;
     }
+
     gameBoard = distribute(player, index, value, gameBoard);
     if (update) {
+        // Detect if a loop has been reached. (mainly for CPU vs CPU)
         var boardHash = hash(gameBoard);
         if (addToPrev && prevBoards.indexOf(boardHash) > -1) {
             console.log('Game Loop Detected');
@@ -509,6 +547,8 @@ function move(index, gameBoard) {
     return gameBoard;
 }
 
+// Distribute the pebbles in a clockwise manner around the board.
+// Starts at the square specified by player and index.
 function distribute(player, index, value, gameBoard) {
     if (value > 0) {
         value--;
@@ -532,6 +572,7 @@ function distribute(player, index, value, gameBoard) {
     return gameBoard;
 }
 
+// Check if the given game board has a winner.
 function checkWinner(gameBoard) {
     var update = true;
     if (gameBoard) {
@@ -563,6 +604,7 @@ function checkWinner(gameBoard) {
         }
     }
     if (update) {
+        // Display a message for the winner and a New Game button.
         var boardContainer = document.getElementById('board');
         var exists = document.getElementById('win_table');
         if (exists) {
